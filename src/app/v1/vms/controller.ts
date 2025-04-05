@@ -1,32 +1,32 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 
-import { createVmsService } from "./services";
+import { createVmService } from "./services";
 import {
-  CreateVmsServiceRequest,
-  CreateVmsServiceRequestSchema,
-  CreateVmsServiceResponseSchema,
+   CreateVmServiceRequest,
+  CreateVmServiceRequestSchema,
+   CreateVmServiceResponseSchema,
 } from "./schemas";
 
 export function vmsController(app: FastifyInstance) {
-  app.addSchema(CreateVmsServiceRequestSchema);
-  app.addSchema(CreateVmsServiceResponseSchema);
+  app.addSchema(CreateVmServiceRequestSchema);
+  app.addSchema(CreateVmServiceResponseSchema);
 
   app.post("/", {
     schema: {
-      body: { $ref: "createVmsServiceRequest#" },
+      body: { $ref: "createVmServiceRequest#" },
       response: {
         201: {
-          $ref: "createVmsServiceResponse#",
+          $ref: "createVmServiceResponse#",
         },
       },
     },
     handler: async (
-      request: FastifyRequest<{ Body: CreateVmsServiceRequest }>,
+      request: FastifyRequest<{ Body: CreateVmServiceRequest }>,
       response,
     ) => {
       const { name, region, plan, password, labels } = request.body;
 
-      const vmData = await createVmsService({
+      const vmData = await createVmService({
         name,
         region,
         plan,

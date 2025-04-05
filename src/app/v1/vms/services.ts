@@ -1,13 +1,13 @@
 import { VmRegions, VmPlans } from "../../../../types/vm";
 
-export type CreateVmsServiceOption = {
+export type CreateVmServiceOption = {
   name: "string";
   region: VmRegions;
   plan: VmPlans;
   password: "string";
   labels: Record<string, string>;
 };
-export async function createVmsService(option: CreateVmsServiceOption) {
+export async function createVmService(option: CreateVmServiceOption) {
   return {
     option,
     ip: "127.0.0.1",
