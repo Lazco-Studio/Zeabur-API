@@ -2,14 +2,14 @@ import { FastifyInstance, FastifyRequest } from "fastify";
 
 import { createVmService } from "./services";
 import {
-   CreateVmServiceRequest,
-  CreateVmServiceRequestSchema,
-   CreateVmServiceResponseSchema,
+  CreateVmRequest,
+  createVmRequestSchema,
+  createVmResponseSchema,
 } from "./schemas";
 
 export function vmsController(app: FastifyInstance) {
-  app.addSchema(CreateVmServiceRequestSchema);
-  app.addSchema(CreateVmServiceResponseSchema);
+  app.addSchema(createVmRequestSchema);
+  app.addSchema(createVmResponseSchema);
 
   app.post("/", {
     schema: {
@@ -21,7 +21,7 @@ export function vmsController(app: FastifyInstance) {
       },
     },
     handler: async (
-      request: FastifyRequest<{ Body: CreateVmServiceRequest }>,
+      request: FastifyRequest<{ Body: CreateVmRequest }>,
       response,
     ) => {
       const { name, region, plan, password, labels } = request.body;

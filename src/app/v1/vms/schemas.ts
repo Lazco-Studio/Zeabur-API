@@ -1,7 +1,7 @@
 import { VmPlans, VmRegions } from "../../../../types/vm";
 
-export const CreateVmServiceRequestSchema = {
-  $id: "createVmServiceRequest",
+export const createVmRequestSchema = {
+  $id: "createVmRequest",
   type: "object",
   required: ["name", "region", "plan", "password"],
   properties: {
@@ -33,7 +33,7 @@ export const CreateVmServiceRequestSchema = {
   },
   additionalProperties: false,
 };
-export type CreateVmServiceRequest = {
+export type CreateVmRequest = {
   name: "string";
   region: VmRegions;
   plan: VmPlans;
@@ -41,8 +41,8 @@ export type CreateVmServiceRequest = {
   labels: Record<string, string>;
 };
 
-export const CreateVmServiceResponseSchema = {
-  $id: "createVmServiceResponse",
+export const createVmResponseSchema = {
+  $id: "createVmResponse",
   type: "object",
   required: ["ip", "managedId"],
   properties: {
