@@ -8,3 +8,9 @@ export enum VmPlans {
   C = "C",
   D = "D",
 }
+
+export enum VmPowerActions {
+  ON = "on",
+  OFF = "off",
+  REBOOT = "reboot",
+}

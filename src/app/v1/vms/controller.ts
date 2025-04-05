@@ -1,18 +1,28 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 
-import { createVmService, deleteVmService } from "./services";
+import {
+  createVmService,
+  deleteVmService,
+  operateVmPowerService,
+} from "./services";
 import {
   CreateVmRequest,
   createVmRequestSchema,
   createVmResponseSchema,
   DeleteVmRequestParams,
   deleteVmRequestParamsSchema,
+  OperateVmPowerRequest,
+  OperateVmPowerRequestParams,
+  operateVmPowerRequestParamsSchema,
+  operateVmPowerRequestSchema,
 } from "./schemas";
 
 export function vmsController(app: FastifyInstance) {
   app.addSchema(createVmRequestSchema);
   app.addSchema(createVmResponseSchema);
   app.addSchema(deleteVmRequestParamsSchema);
+  app.addSchema(operateVmPowerRequestSchema);
+  app.addSchema(operateVmPowerRequestParamsSchema);
 
   app.post("/", {
     schema: {
@@ -56,6 +66,31 @@ export function vmsController(app: FastifyInstance) {
       return response.code(204).send();
     },
   });
+
+  app.post("/:managedId/power", {
+    schema: {
+      params: { $ref: "operateVmPowerRequestParams#" },
+      body: { $ref: "operateVmPowerRequest#" },
+    },
+    handler: async (
+      request: FastifyRequest<{
+        Params: OperateVmPowerRequestParams;
+        Body: OperateVmPowerRequest;
+      }>,
+      response,
+    ) => {
+      const { managedId } = request.params;
+      const { action } = request.body;
+
+      await operateVmPowerService({
+        managedId,
+        action,
+      });
+
+      return response.code(204).send();
+    },
+  });
+
   // app.get(
   //   "/:vmId",
   //   async (

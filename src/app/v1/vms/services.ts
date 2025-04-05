@@ -1,6 +1,6 @@
 import { ClientError } from "../../../../modules/clientError";
 import { HttpStatus } from "../../../../modules/http/statusCodes";
-import { VmRegions, VmPlans } from "../../../../types/vm";
+import { VmRegions, VmPlans, VmPowerActions } from "../../../../types/vm";
 
 export type CreateVmServiceOption = {
   name: string;
@@ -23,13 +23,35 @@ export type DeleteVmServiceOption = {
 export async function deleteVmService(option: DeleteVmServiceOption) {
   const { managedId } = option;
 
-  if (managedId === "failed") {
+  if (managedId === "not-found") {
     throw new ClientError(
       {
-        errorMessage: "Failed to delete VM",
+        errorMessage: "VM not found",
         errorObject: { managedId, test: "true" },
       },
-      HttpStatus.BAD_REQUEST,
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  return true;
+}
+
+export type OperateVmPowerServiceOption = {
+  managedId: string;
+  action: VmPowerActions;
+};
+export async function operateVmPowerService(
+  option: OperateVmPowerServiceOption,
+) {
+  const { managedId, action } = option;
+
+  if (managedId === "not-found") {
+    throw new ClientError(
+      {
+        errorMessage: "VM not found",
+        errorObject: { managedId, action, test: "true" },
+      },
+      HttpStatus.NOT_FOUND,
     );
   }
 
