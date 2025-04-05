@@ -1,4 +1,4 @@
-import { VmsPlan, VmsRegion } from "./services";
+import { VmPlans, VmRegions } from "../../../../types/vm";
 
 export const CreateVmsServiceRequestSchema = {
   $id: "createVmsServiceRequest",
@@ -11,12 +11,12 @@ export const CreateVmsServiceRequestSchema = {
     },
     region: {
       type: "string",
-      enum: Object.values(VmsRegion),
+      enum: Object.values(VmRegions),
       description: "The region where the VM will be deployed",
     },
     plan: {
       type: "string",
-      enum: Object.values(VmsPlan),
+      enum: Object.values(VmPlans),
       description: "The plan of the VM",
     },
     password: {
@@ -35,8 +35,8 @@ export const CreateVmsServiceRequestSchema = {
 };
 export type CreateVmsServiceRequest = {
   name: "string";
-  region: VmsRegion;
-  plan: VmsPlan;
+  region: VmRegions;
+  plan: VmPlans;
   password: "string";
   labels: Record<string, string>;
 };
