@@ -18,6 +18,7 @@ import {
 } from "./schemas";
 import { proxmoxAPI } from "../../../../modules/proxmoxApi";
 import { nodes } from "../../../../modules/proxmoxApi/nodes";
+import { sortObjectByKeys } from "../../../../modules/sortObjectByKeys";
 
 export function vmsController(app: FastifyInstance) {
   app.addSchema(managedIdRequestParamsSchema);
@@ -31,7 +32,7 @@ export function vmsController(app: FastifyInstance) {
       .instance()
       .nodes.$(nodes.tpe1)
       .status.$get();
-    return response.code(200).send(status);
+    return response.code(200).send(sortObjectByKeys(status));
   });
 
   app.post("/", {
