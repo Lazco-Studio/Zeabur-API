@@ -1,22 +1,25 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 
-import { createVmService } from "./services";
+import { createVmService, deleteVmService } from "./services";
 import {
   CreateVmRequest,
   createVmRequestSchema,
   createVmResponseSchema,
+  DeleteVmRequestParams,
+  deleteVmRequestParamsSchema,
 } from "./schemas";
 
 export function vmsController(app: FastifyInstance) {
   app.addSchema(createVmRequestSchema);
   app.addSchema(createVmResponseSchema);
+  app.addSchema(deleteVmRequestParamsSchema);
 
   app.post("/", {
     schema: {
-      body: { $ref: "createVmServiceRequest#" },
+      body: { $ref: "createVmRequest#" },
       response: {
         201: {
-          $ref: "createVmServiceResponse#",
+          $ref: "createVmResponse#",
         },
       },
     },
@@ -35,6 +38,22 @@ export function vmsController(app: FastifyInstance) {
       });
 
       return response.code(201).send(vmData);
+    },
+  });
+
+  app.delete("/:managedId", {
+    schema: {
+      params: { $ref: "deleteVmRequestParams#" },
+    },
+    handler: async (
+      request: FastifyRequest<{ Params: DeleteVmRequestParams }>,
+      response,
+    ) => {
+      const { managedId } = request.params;
+
+      await deleteVmService({ managedId });
+
+      return response.code(204).send();
     },
   });
   // app.get(

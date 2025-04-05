@@ -34,10 +34,10 @@ export const createVmRequestSchema = {
   additionalProperties: false,
 };
 export type CreateVmRequest = {
-  name: "string";
+  name: string;
   region: VmRegions;
   plan: VmPlans;
-  password: "string";
+  password: string;
   labels: Record<string, string>;
 };
 
@@ -58,6 +58,22 @@ export const createVmResponseSchema = {
   additionalProperties: false,
 };
 export type CreateVmServiceResponse = {
-  ip: "string";
-  managedId: "string";
+  ip: string;
+  managedId: string;
+};
+
+export const deleteVmRequestParamsSchema = {
+  $id: "deleteVmRequestParams",
+  type: "object",
+  required: ["managedId"],
+  properties: {
+    managedId: {
+      type: "string",
+      description: "The managed ID of the VM",
+    },
+  },
+  additionalProperties: false,
+};
+export type DeleteVmRequestParams = {
+  managedId: string;
 };
