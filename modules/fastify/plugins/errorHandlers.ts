@@ -14,9 +14,13 @@ export function notFoundHandler(
 
 export function fallbackErrorHandler(
   error: FastifyError,
-  _request: FastifyRequest,
+  request: FastifyRequest,
   response: FastifyReply,
 ) {
+  if (process.env.APP_ENVIRONMENT !== "production") {
+    request.log.error(error.message);
+  }
+
   switch (true) {
     case error.code === "FST_ERR_VALIDATION": {
       return response.status(HttpStatus.BAD_REQUEST).send({
