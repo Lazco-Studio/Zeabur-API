@@ -3,12 +3,14 @@ import { FastifyInstance, FastifyRequest } from "fastify";
 import {
   createVmService,
   deleteVmService,
+  getVmStatusService,
   operateVmPowerService,
 } from "./services";
 import {
   CreateVmRequest,
   createVmRequestSchema,
   createVmResponseSchema,
+  getVmStatusResponseSchema,
   ManagedIdRequestParams,
   managedIdRequestParamsSchema,
   OperateVmPowerRequest,
@@ -20,6 +22,7 @@ export function vmsController(app: FastifyInstance) {
   app.addSchema(createVmRequestSchema);
   app.addSchema(createVmResponseSchema);
   app.addSchema(operateVmPowerRequestSchema);
+  app.addSchema(getVmStatusResponseSchema);
 
   app.post("/", {
     schema: {
@@ -85,6 +88,25 @@ export function vmsController(app: FastifyInstance) {
       });
 
       return response.code(204).send();
+    },
+  });
+
+  app.get("/:managedId/status", {
+    schema: {
+      params: { $ref: "managedIdRequestParams#" },
+      response: {
+        200: { $ref: "getVmStatusResponse#" },
+      },
+    },
+    handler: async (
+      request: FastifyRequest<{ Params: ManagedIdRequestParams }>,
+      response,
+    ) => {
+      const { managedId } = request.params;
+
+      const vmStatus = await getVmStatusService({ managedId });
+
+      return response.code(200).send(vmStatus);
     },
   });
 }

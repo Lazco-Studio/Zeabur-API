@@ -94,3 +94,19 @@ export const operateVmPowerRequestSchema = {
 export type OperateVmPowerRequest = {
   action: VmPowerActions;
 };
+
+export const getVmStatusResponseSchema = {
+  $id: "getVmStatusResponse",
+  type: "object",
+  required: ["status"],
+  properties: {
+    status: {
+      type: "string",
+      description: "The status of the VM",
+    },
+  },
+  additionalProperties: false,
+};
+export type GetVmStatusServiceResponse = {
+  status: string;
+};
