@@ -16,6 +16,8 @@ import {
   OperateVmPowerRequest,
   operateVmPowerRequestSchema,
 } from "./schemas";
+import { proxmoxAPI } from "../../../../modules/proxmoxApi";
+import { nodes } from "../../../../modules/proxmoxApi/nodes";
 
 export function vmsController(app: FastifyInstance) {
   app.addSchema(managedIdRequestParamsSchema);
@@ -23,6 +25,14 @@ export function vmsController(app: FastifyInstance) {
   app.addSchema(createVmResponseSchema);
   app.addSchema(operateVmPowerRequestSchema);
   app.addSchema(getVmStatusResponseSchema);
+
+  app.get("/", async (_request, response) => {
+    const status = await proxmoxAPI
+      .instance()
+      .nodes.$(nodes.tpe1)
+      .status.$get();
+    return response.code(200).send(status);
+  });
 
   app.post("/", {
     schema: {
