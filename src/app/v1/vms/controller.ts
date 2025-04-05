@@ -9,20 +9,17 @@ import {
   CreateVmRequest,
   createVmRequestSchema,
   createVmResponseSchema,
-  DeleteVmRequestParams,
-  deleteVmRequestParamsSchema,
+  ManagedIdRequestParams,
+  managedIdRequestParamsSchema,
   OperateVmPowerRequest,
-  OperateVmPowerRequestParams,
-  operateVmPowerRequestParamsSchema,
   operateVmPowerRequestSchema,
 } from "./schemas";
 
 export function vmsController(app: FastifyInstance) {
+  app.addSchema(managedIdRequestParamsSchema);
   app.addSchema(createVmRequestSchema);
   app.addSchema(createVmResponseSchema);
-  app.addSchema(deleteVmRequestParamsSchema);
   app.addSchema(operateVmPowerRequestSchema);
-  app.addSchema(operateVmPowerRequestParamsSchema);
 
   app.post("/", {
     schema: {
@@ -53,10 +50,10 @@ export function vmsController(app: FastifyInstance) {
 
   app.delete("/:managedId", {
     schema: {
-      params: { $ref: "deleteVmRequestParams#" },
+      params: { $ref: "managedIdRequestParams#" },
     },
     handler: async (
-      request: FastifyRequest<{ Params: DeleteVmRequestParams }>,
+      request: FastifyRequest<{ Params: ManagedIdRequestParams }>,
       response,
     ) => {
       const { managedId } = request.params;
@@ -69,12 +66,12 @@ export function vmsController(app: FastifyInstance) {
 
   app.post("/:managedId/power", {
     schema: {
-      params: { $ref: "operateVmPowerRequestParams#" },
+      params: { $ref: "managedIdRequestParams#" },
       body: { $ref: "operateVmPowerRequest#" },
     },
     handler: async (
       request: FastifyRequest<{
-        Params: OperateVmPowerRequestParams;
+        Params: ManagedIdRequestParams;
         Body: OperateVmPowerRequest;
       }>,
       response,
@@ -90,22 +87,4 @@ export function vmsController(app: FastifyInstance) {
       return response.code(204).send();
     },
   });
-
-  // app.get(
-  //   "/:vmId",
-  //   async (
-  //     request: FastifyRequest<{
-  //       Params: {
-  //         vmId: string;
-  //       };
-  //     }>,
-  //     response,
-  //   ) => {
-  //     const { vmId } = request.params;
-
-  //     response.send({
-  //       vmId,
-  //     });
-  //   },
-  // );
 }

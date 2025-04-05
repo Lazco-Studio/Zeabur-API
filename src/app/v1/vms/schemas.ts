@@ -1,5 +1,21 @@
 import { VmPlans, VmPowerActions, VmRegions } from "../../../../types/vm";
 
+export const managedIdRequestParamsSchema = {
+  $id: "managedIdRequestParams",
+  type: "object",
+  required: ["managedId"],
+  properties: {
+    managedId: {
+      type: "string",
+      description: "The managed ID of the VM",
+    },
+  },
+  additionalProperties: false,
+};
+export type ManagedIdRequestParams = {
+  managedId: string;
+};
+
 export const createVmRequestSchema = {
   $id: "createVmRequest",
   type: "object",
@@ -59,38 +75,6 @@ export const createVmResponseSchema = {
 };
 export type CreateVmServiceResponse = {
   ip: string;
-  managedId: string;
-};
-
-export const deleteVmRequestParamsSchema = {
-  $id: "deleteVmRequestParams",
-  type: "object",
-  required: ["managedId"],
-  properties: {
-    managedId: {
-      type: "string",
-      description: "The managed ID of the VM",
-    },
-  },
-  additionalProperties: false,
-};
-export type DeleteVmRequestParams = {
-  managedId: string;
-};
-
-export const operateVmPowerRequestParamsSchema = {
-  $id: "operateVmPowerRequestParams",
-  type: "object",
-  required: ["managedId"],
-  properties: {
-    managedId: {
-      type: "string",
-      description: "The managed ID of the VM",
-    },
-  },
-  additionalProperties: false,
-};
-export type OperateVmPowerRequestParams = {
   managedId: string;
 };
 
